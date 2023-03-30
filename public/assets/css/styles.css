@@ -1,0 +1,7 @@
+body {
+    background-image: url(../images/bgWhite.jpg);
+}
+
+.nav-custom, .footer-custom {
+    background-color: #d4cdd4;
+}
