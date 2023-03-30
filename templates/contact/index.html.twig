@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ContactController!{% endblock %}
+
+{% block body %}
+        <h1 class="text-center">Formulaire de contact</h1>
+            {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.subject) }}
+                {{ form_row(form.message) }}
+                <input class="btn btn-custom mt-4" type="submit" value="Envoyer">
+            {{ form_end(form)}}
+{% endblock %}

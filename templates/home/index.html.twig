@@ -3,6 +3,23 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endfor %}
+        <a href="{{ path('recipe_list') }}">Liste des recettes</a>
     <h1>Page d'accueil</h1>
+
+    <section>
+        <h2>A propos</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore ducimus doloremque iure neque culpa nam modi natus vitae ex facilis voluptas iusto, quae cumque laborum placeat! Totam iure eaque doloribus!</p>
+    </section>
+
+    <section>
+        <h2>Mes Services</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore ducimus doloremque iure neque culpa nam modi natus vitae ex facilis voluptas iusto, quae cumque laborum placeat! Totam iure eaque doloribus!</p>
+
+    </section>
+    
 
 {% endblock %}

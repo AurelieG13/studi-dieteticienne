@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Modifier Recette{% endblock %}
+
+{% block body %}
+    <main class="container">
+    <h1>Modification d'une recette</h1>
+            <section>
+                    <a href="{{ path('admin_recipe_list') }}" type="button" class="btn btn-custom my-3">Retour</a>
+            </section>
+            {{ form_start(form)}}
+
+            {{ form_row(form.title) }}
+            <section>
+                    <button type="submit" class="btn btn-custom my-3">Modifier</button>
+            </section>
+            {{ form_end(form)}}
+    </main>
+{% endblock %}

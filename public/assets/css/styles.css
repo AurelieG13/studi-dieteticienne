@@ -5,3 +5,14 @@ body {
 .nav-custom, .footer-custom {
     background-color: #d4cdd4;
 }
+
+.btn-custom {
+    background-color: #605a7e;
+    color: white;
+    transition-duration: 0.5s;
+}
+
+.btn-custom:hover{
+    background-color: #cec5c3;
+    color: black;
+}

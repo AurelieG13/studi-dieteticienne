@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminUserController!{% endblock %}
+
+{% block body %}
+<h1>Admin</h1>
+<h2>Liste des recettes</h2>
+
+{% for recipe in recipes %}
+    {{ recipe.title}} - {{ recipe.description}} /
+{% endfor %}
+{% endblock %}
