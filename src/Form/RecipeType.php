@@ -2,7 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Allergy;
+use App\Entity\Diet;
+use App\Entity\Ingredient;
 use App\Entity\Recipe;
+use App\Entity\Step;
+use App\Repository\AllergyRepository;
+use App\Repository\DietRepository;
+use App\Repository\IngredientRepository;
+use App\Repository\StepRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -66,6 +75,50 @@ class RecipeType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(["message" => "Le contenu ne doit pas être vide"])
                 ]
+            ])
+            ->add('ingredients', EntityType::class, [
+                'class' => Ingredient::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'name',
+                'query_builder' => function(IngredientRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Ingredients',
+            ])
+            ->add('steps', EntityType::class, [
+                'class' => Step::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'fullname',
+                'query_builder' => function(StepRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Etapes',
+            ])
+            ->add('allergies', EntityType::class, [
+                'class' => Allergy::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'name',
+                'query_builder' => function(AllergyRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Allergies',
+            ])
+            ->add('diet', EntityType::class, [
+                'class' => Diet::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'name',
+                'query_builder' => function(DietRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Régimes',
             ])
         ;
     }

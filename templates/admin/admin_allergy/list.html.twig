@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Allergies{% endblock %}
+
+{% block body %}
+
+    <div class="mb-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> panneau d'administration</a>
+    </div>
+
+    <h1>Liste des allergies</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_allergy_add') }}" type="button" class="btn btn-custom">
+            Ajouter une allergie
+        </a>
+    </div>
+            
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="text-center">
+            <td>Nom</td>
+            <td colspan="2">Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for allergy in allergies %}
+        <tr class="text-center">
+            <td>{{ allergy.name }}</td>
+            <td>
+            <a href="{{ path('admin_allergy_edit', {id: allergy.id}) }}" type="button" class="btn btn-success">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_allergy_delete', {id: allergy.id}) }}" type="button" class="btn btn-danger">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
+
+{% endblock %}

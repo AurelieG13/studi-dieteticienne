@@ -3,22 +3,60 @@
 {% block title %}Hello RecipeController!{% endblock %}
 
 {% block body %}
-<h1>Liste des Recette</h1>
+    <h1>Liste des recettes</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>Titre</th>
             <th>Description</th>
+            <th>prep</th>
+            <th>repos</th>
+            <th>cuisson</th>
+            <th>ingrédients</th>
+            <th>Etapes</th>
+            <th>allergies</th>
+            <th>regimes</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
             {% for recipe in recipes %}
+            <tr>
                 <td>{{ recipe.title}}</td>
                 <td>{{ recipe.description}}</td>
+                <td>{{ recipe.prepareTime|date("H:i") }}</td>
+                <td>{{ recipe.restTime|date("H:i")}}</td>
+                <td>{{ recipe.cookingTime|date("H:i")}}</td>
+                <td>
+                    {% for ingredient in recipe.ingredients %}
+                        <p>{{ ingredient.name }}</p>
+                    {% else %}
+                        <p>pas d'ingredient</p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for step in recipe.steps %}
+                        <p>{{ step.name }}</p>
+                    {% else %}
+                        <p>pas d'étape</p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for allergy in recipe.allergies %}
+                        <p>{{ allergy.name }}</p>
+                    {% else %}
+                        <p>pas d'allergie</p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for diet in recipe.diet %}
+                        <p>{{ diet.name }}</p>
+                    {% else %}
+                        <p>pas de régime particulier</p>
+                    {% endfor %}
+                </td>
+            </tr>
             {% endfor %}
-        </tr>
     </tbody>
 </table>
 {% endblock %}

@@ -3,10 +3,59 @@
 {% block title %}Hello AdminUserController!{% endblock %}
 
 {% block body %}
-<h1>Admin</h1>
-<h2>Liste des utilisateurs</h2>
 
-{% for user in users %}
-    {{ user.name}} - {{ user.firstname}} /
-{% endfor %}
+    {# {% for flash_error in app.flashes('success') %}
+        <div class="alert alert-success" role="alert">{{ success }}</div>
+    {% endfor %} #}
+
+    <div class="mb-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> panneau d'administration</a>
+    </div>
+
+    <h1>Liste des patients</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_user_addPatient') }}" type="button" class="btn btn-custom">
+            Ajouter un patient
+        </a>
+    </div>
+            
+
+<table class="table table-bordered border-dark align-middle table-hover">
+    <thead>
+        <tr class="text-center">
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Allergies</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr class="text-center">
+            <td>{{ user.name }}</td>
+            <td>{{ user.firstname }}</td>
+            <td>
+            
+            {% for allergy in user.allergies %}
+                    <p>{{ allergy.name }}</p>
+                {% else %}
+                    <p>pas d'allergie</p>
+            {% endfor %}
+            
+            </td>
+            <td>
+            <a href="{{ path('admin_user_editPatient', {id: user.id}) }}" type="button" class="btn btn-success">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_user_deletePatient', {id: user.id}) }}" type="button" class="btn btn-danger">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
 {% endblock %}

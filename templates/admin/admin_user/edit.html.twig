@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin - Enregistrer un patient{% endblock %}
+{% block title %}Admin - Modifier un patient{% endblock %}
 
 {% block body %}
     {# {% for flash_error in app.flashes('verify_email_error') %}
@@ -8,20 +8,18 @@
     {% endfor %} #}
 
     <main class="container">
-        <h1>Enregistrer un nouveau patient</h1>
+        <h1>Modifier un patient</h1>
 
             <section>
                 <a href="{{ path('admin_home') }}" type="button" class="btn btn-custom my-3">Retour</a>
             </section>
-            {{ form_start(admin_register_form)}}
-            {{ form_row(admin_register_form.name) }}
-            {{ form_row(admin_register_form.firstname) }}
-            {{ form_row(admin_register_form.email) }}
-            {{ form_row(admin_register_form.plainPassword) }}
-            {{ form_row(admin_register_form.allergies) }}
+            {{ form_start(admin_edit_form)}}
+            {{ form_row(admin_edit_form.name) }}
+            {{ form_row(admin_edit_form.firstname) }}
+            {{ form_row(admin_edit_form.allergies) }}
             <section>
                     <button type="submit" class="btn btn-custom my-3">Ajouter</button>
             </section>
-            {{ form_end(admin_register_form)}}
+            {{ form_end(admin_edit_form)}}
     </main>
 {% endblock %}

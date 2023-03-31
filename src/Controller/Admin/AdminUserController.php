@@ -3,9 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\UserEditType;
+use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +29,13 @@ class AdminUserController extends AbstractController
     public function addPatient(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager
+        ManagerRegistry $doctrine
     ): Response
     {
 
         $user = new User($userPasswordHasher);
         $user->setRoles(['ROLE_USER']);
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,16 +46,52 @@ class AdminUserController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $em = $doctrine->getManager();
+            $em->persist($user);
+            $em->flush();
 
-            $this->addFlash('success', 'Profil Patient ajouté avec succès');
+            
             return $this->redirectToRoute('admin_user_list');
+            $this->addFlash('success', 'Profil Patient ajouté avec succès');
             
         }
 
         return $this->render('admin/admin_user/register.html.twig', [
             'admin_register_form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/edit/{id<\d+>}', name: 'editPatient')]
+    public function edit(
+        User $user,
+        Request $request,
+        ManagerRegistry $doctrine
+        ): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $form = $this->createForm(UserEditType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
+            $em->flush();
+            
+            return $this->redirectToRoute('admin_user_list');
+        }
+        return $this->render('admin/admin_user/edit.html.twig', [
+            'admin_edit_form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/delete/{id<\d+>}', name: 'deletePatient')]
+    public function deleteAllergy(User $user, ManagerRegistry $doctrine)
+    {
+        
+        $em = $doctrine->getManager();
+        $em->remove($user);
+        $em->flush(); 
+
+        $this->addFlash('success', 'Patient supprimé avec succes');
+        return $this->redirectToRoute('admin_user_list');
     }
 }

@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Controller\Admin;
+
+use App\Entity\Step;
+use App\Form\StepType;
+use App\Repository\StepRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[Route('/admin/step', name: 'admin_step_')]
+class AdminStepController extends AbstractController
+{
+    #[Route('/', name: 'list')]
+    public function index(StepRepository $stepRepository): Response
+    {
+        return $this->render('admin/admin_step/list.html.twig', [
+            'steps' => $stepRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/add', name: 'add')]
+    public function addStep(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $step = new Step();
+
+        $form = $this->createForm(StepType::class, $step);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $step = $form->getData();
+            $em = $doctrine->getManager();
+            $em->persist($step);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_step_list');
+        }
+
+
+        return $this->render('admin/admin_step/addStep.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/edit/{id<\d+>}', name: 'edit')]
+    public function editStep(Step $step, Request $request, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(StepType::class, $step);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
+            $em->persist($step);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_step_list');
+        }
+
+        return $this->render('admin/admin_step/editstep.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/delete/{id<\d+>}', name: 'delete')]
+    public function deleteAllergy(Step $step, ManagerRegistry $doctrine)
+    {
+        
+        $em = $doctrine->getManager();
+        $em->remove($step);
+        $em->flush(); 
+
+        $this->addFlash('success', 'étape supprimée avec succes');
+        return $this->redirectToRoute('admin_step_list');
+    }
+}

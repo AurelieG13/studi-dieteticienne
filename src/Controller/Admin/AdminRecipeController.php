@@ -66,15 +66,15 @@ class AdminRecipeController extends AbstractController
         ]);
     }
 
-    // #[Route('/delete/{id<\d+>}', name: 'delete')]
-    // public function deleteAllergy(Allergy $allergy, ManagerRegistry $doctrine)
-    // {
+    #[Route('/delete/{id<\d+>}', name: 'delete')]
+    public function deleteRecipe(Recipe $recipe, ManagerRegistry $doctrine)
+    {
         
-    //     $em = $doctrine->getManager();
-    //     $em->remove($allergy);
-    //     $em->flush(); 
+        $em = $doctrine->getManager();
+        $em->remove($recipe);
+        $em->flush(); 
 
-    //     $this->addFlash('success', 'allergie supprimée avec succes');
-    //     return $this->redirectToRoute('manager_allergy_list');
-    // }
+        $this->addFlash('success', 'Recette supprimée avec succes');
+        return $this->redirectToRoute('admin_recipe_list');
+    }
 }
