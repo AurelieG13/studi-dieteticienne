@@ -4,30 +4,31 @@
 
 {% block body %}
 
-    <div class="mb-4">
-        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> panneau d'administration</a>
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
     </div>
 
-    <h1>Liste des recettes</h1>
+    <h1  class="text-center">Liste des recettes</h1>
     <div class="mb-4 mt-4">
         <a href="{{ path('admin_recipe_add') }}" type="button" class="btn btn-custom">
             Ajouter une recette
         </a>
     </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
     <thead>
-        <tr class="text-center">
+        <tr class="text-center align-middle">
             <th>Titre</th>
             <th>Description</th>
-            <th>prep</th>
-            <th>repos</th>
-            <th>cuisson</th>
-            <th>ingrédients</th>
+            <th>Réservée Patientèle</th>
+            <th>Temps de préparation</th>
+            <th>Temps de repos</th>
+            <th>Temps de cuisson</th>
+            <th>Ingrédients</th>
             <th>Etapes</th>
-            <th>allergies</th>
-            <th>regimes</th>
-            <td colspan="2">Actions</td>
+            <th>Allergies</th>
+            <th>Régimes</th>
+            <th colspan="2">Actions</th>
             
         </tr>
     </thead>
@@ -36,6 +37,12 @@
         <tr class="text-center">
                 <td>{{ recipe.title}}</td>
                 <td>{{ recipe.description}}</td>
+                <td>
+                    <div class="form-check form-switch ms-4">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" {{ (recipe.activeRecipe) ? 'checked':''}} data-id="{{ recipe.id }}">
+                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                    </div>
+                </td>
                 <td>{{ recipe.prepareTime|date("H:i")}}</td>
                 <td>{{ recipe.restTime|date("H:i")}}</td>
                 <td>{{ recipe.cookingTime|date("H:i")}}</td>
@@ -57,23 +64,23 @@
                     {% for allergy in recipe.allergies %}
                         <p>{{ allergy.name }}</p>
                     {% else %}
-                        <p>pas d'allergie</p>
+                        <p>pas d'allergie particulière</p>
                     {% endfor %}
                 </td>
                 <td>
-                    {% for diet in recipe.diet %}
+                    {% for diet in recipe.diets %}
                         <p>{{ diet.name }}</p>
                     {% else %}
                         <p>pas de régime particulier</p>
                     {% endfor %}
                 </td>
                 <td>
-                    <a href="{{ path('admin_recipe_edit', {id: recipe.id}) }}" type="button" class="btn btn-success">
+                    <a href="{{ path('admin_recipe_edit', {id: recipe.id}) }}" type="button" class="btn btn-success-custom">
                         Modifier
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('admin_recipe_delete', {id: recipe.id}) }}" type="button" class="btn btn-danger">
+                    <a href="{{ path('admin_recipe_delete', {id: recipe.id}) }}" type="button" class="btn btn-danger-custom">
                         Supprimer
                     </a>
                 </td>
@@ -81,4 +88,7 @@
             {% endfor %}
     </tbody>
 </table>
+
+        <script src="{{ asset('assets/js/scripts.js')}}"></script>
+
 {% endblock %}

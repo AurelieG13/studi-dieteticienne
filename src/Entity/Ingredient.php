@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
@@ -16,11 +18,22 @@ class Ingredient
     #[ORM\Column(length: 180)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ingredients')]
-    private ?Recipe $recipe = null;
+    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'ingredients')]
+    private ?Collection $recipies;
+
 
     #[ORM\Column(length: 150, nullable: true)]
-    private ?string $quantity = null;
+    private ?string $quantity = "0";
+
+    public function __construct()
+    {
+        $this->recipies = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name; 
+    }
 
     public function getId(): ?int
     {
@@ -39,14 +52,26 @@ class Ingredient
         return $this;
     }
 
-    public function getRecipe(): ?Recipe
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipies(): Collection
     {
-        return $this->recipe;
+        return $this->recipies;
     }
 
-    public function setRecipe(?Recipe $recipe): self
+    public function addRecipy(Recipe $recipy): self
     {
-        $this->recipe = $recipe;
+        if (!$this->recipies->contains($recipy)) {
+            $this->recipies->add($recipy);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipy(Recipe $recipy): self
+    {
+        $this->recipies->removeElement($recipy);
 
         return $this;
     }

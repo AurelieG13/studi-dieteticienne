@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DietRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DietRepository::class)]
@@ -16,8 +18,23 @@ class Diet
     #[ORM\Column(length: 180)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'diet')]
-    private ?Recipe $recipe = null;
+    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'diets')]
+    private ?Collection $recipies;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'diets')]
+    private ?Collection $users;
+
+
+    public function __construct()
+    {
+        $this->recipies = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name; 
+    }
 
     public function getId(): ?int
     {
@@ -36,14 +53,50 @@ class Diet
         return $this;
     }
 
-    public function getRecipe(): ?Recipe
+        /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipies(): Collection
     {
-        return $this->recipe;
+        return $this->recipies;
     }
 
-    public function setRecipe(?Recipe $recipe): self
+    public function addRecipy(Recipe $recipy): self
     {
-        $this->recipe = $recipe;
+        if (!$this->recipies->contains($recipy)) {
+            $this->recipies->add($recipy);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipy(Recipe $recipy): self
+    {
+        $this->recipies->removeElement($recipy);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

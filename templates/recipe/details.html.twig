@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette : {{ recipe.title}} {% endblock %}
+
+{% block body %}
+        <section>
+                <a href="{{ path('recipe_list') }}" type="button" class="btn btn-custom my-3">Retour à la liste des recettes</a>
+        </section>
+    <section class="title-detail-custom mt-5">
+        <h1>{{ recipe.title }}</h1>
+        <p>{{ recipe.description}}</p>
+        <h3>Avis</h3>
+        <p>Etoiles / 5</p>
+    </section>
+
+    <section class="title-detail-custom">
+        <ul class="nav nav-pills">
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" type="button" aria-current="page" href="#ingredient">Ingredients</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#time">Temps</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#step">Etapes</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#allergy">Allergènes</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#diet">Régimes associés</a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="ingredient">Ingrédients</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for ingredient in recipe.ingredients %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ ingredient.name }}
+                            <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span>
+                            </li>
+                            {% else %}
+                            <p>pas d'ingredient</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="time">Temps</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de préparation :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.prepareTime|date("H:i") }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de repos :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.restTime|date("H:i") }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de cuisson :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.cookingTime|date("H:i") }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+        <h2 class="ms-5 subtitle-detail" id="step">Etapes</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    
+                    <div>
+                        <ul class="list-group">
+                            {% for step in recipe.steps %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ step.fullname }}
+                            </li>
+                            {% else %}
+                            <p>pas d'étape</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="allergy">Allergènes</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for allergy in recipe.allergies %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ allergy.name }}
+                            {# <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span> #}
+                            </li>
+                            {% else %}
+                            <p>pas d'allergie</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="diet">Régimes Associés</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for diet in recipe.diets %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ diet.name }}
+                            {# <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span> #}
+                            </li>
+                            {% else %}
+                            <p>pas de régime particulier</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

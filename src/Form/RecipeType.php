@@ -109,7 +109,7 @@ class RecipeType extends AbstractType
                 },
                 'label' => 'Allergies',
             ])
-            ->add('diet', EntityType::class, [
+            ->add('diets', EntityType::class, [
                 'class' => Diet::class,
                 'multiple' =>true,
                 'expanded' => true,

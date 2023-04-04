@@ -23,6 +23,17 @@ class AdminRecipeController extends AbstractController
         ]);
     }
 
+    #[Route('/active/{id<\d+>}', name: 'active')]
+    public function active(Recipe $recipe, ManagerRegistry $doctrine): Response
+    {
+        $recipe->setActiveRecipe(($recipe->getActiveRecipe()) ? false : true);
+        $em = $doctrine->getManager();
+        $em->persist($recipe);
+        $em->flush();
+
+        return new Response ("true");
+    }
+
     #[Route('/add', name: 'add')]
     public function addRecipe(Request $request, ManagerRegistry $doctrine): Response
     {

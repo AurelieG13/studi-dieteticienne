@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Allergy;
+use App\Entity\Diet;
 use App\Entity\User;
 use App\Repository\AllergyRepository;
+use App\Repository\DietRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -53,6 +55,17 @@ class RegistrationFormType extends AbstractType
                 },
                 'label' => 'Allergies',
             ])
+            ->add('diets', EntityType::class, [
+                'class' => Diet::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'name',
+                'query_builder' => function(DietRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Régimes',
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -65,17 +78,18 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                
                 'attr' => [
                     'autocomplete' => 'new-password',
                     'class' => 'form-control',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Merci de saisir un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit faire au minimum {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),

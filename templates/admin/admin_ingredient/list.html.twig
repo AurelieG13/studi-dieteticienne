@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Ingrédients{% endblock %}
+
+{% block body %}
+
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
+    </div>
+
+    <h1  class="text-center">Liste des ingrédients</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_ingredient_add') }}" type="button" class="btn btn-custom">
+            Ajouter un ingrédient
+        </a>
+    </div>
+            
+
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
+    <thead>
+        <tr class="text-center align-middle">
+            <th>Nom</th>
+            <th>Quantité</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ingredient in ingredients %}
+        <tr class="text-center">
+            <td>{{ ingredient.name }}</td>
+            <td>{{ ingredient.quantity }}</td>
+            <td>
+            <a href="{{ path('admin_ingredient_edit', {id: ingredient.id}) }}" type="button" class="btn btn-success-custom">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_ingredient_delete', {id: ingredient.id}) }}" type="button" class="btn btn-danger-custom">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
+
+{% endblock %}

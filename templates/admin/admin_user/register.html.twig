@@ -3,12 +3,8 @@
 {% block title %}Admin - Enregistrer un patient{% endblock %}
 
 {% block body %}
-    {# {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %} #}
-
     <main class="container">
-        <h1>Enregistrer un nouveau patient</h1>
+        <h1 class="text-center">Enregistrer un nouveau patient</h1>
 
             <section>
                 <a href="{{ path('admin_home') }}" type="button" class="btn btn-custom my-3">Retour</a>
@@ -19,6 +15,7 @@
             {{ form_row(admin_register_form.email) }}
             {{ form_row(admin_register_form.plainPassword) }}
             {{ form_row(admin_register_form.allergies) }}
+            {{ form_row(admin_register_form.diets) }}
             <section>
                     <button type="submit" class="btn btn-custom my-3">Ajouter</button>
             </section>

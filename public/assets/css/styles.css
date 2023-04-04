@@ -1,9 +1,15 @@
 body {
     background-image: url(../images/bgWhite.jpg);
+    background-size:cover;
 }
 
 .nav-custom, .footer-custom {
     background-color: #d4cdd4;
+}
+
+.bg-custom{
+    background-color: #605a7e;
+    padding: 10px;
 }
 
 .btn-custom {
@@ -15,4 +21,96 @@ body {
 .btn-custom:hover{
     background-color: #cec5c3;
     color: black;
+}
+
+.colibri{
+    width: 100px;
+    border-radius: 50%;
+}
+
+.diet-img{
+    width: 500px;
+}
+
+.separator-custom{
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, transparent, white, #605a7e, #605a7e , transparent); 
+}
+
+.title-detail-custom{
+    margin-left: 130px;
+}
+
+.subtitle-detail {
+    color: #605a7e;
+    background-image: linear-gradient(to right, transparent, white, #d4cdd4, white , transparent); 
+}
+
+.list-details{
+    background-color: #eee6e1;
+}
+
+.diet-img-desktop{
+    display: none;
+}
+
+.sidebar-custom{
+    background-color: #605a7e;
+    color: white;
+}
+
+
+.icon-privacy-custom {
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-beige);
+    margin: auto;
+    padding: 2px;
+}
+
+.icon-profile-custom {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-beige);
+    background-color: var(--color-gray);
+    margin: auto;
+    padding: 2px;
+}
+
+.icon-table-custom {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-beige);
+    background-color: var(--color-bg);
+    margin: auto;
+    padding: 2px;
+}
+
+.btn-danger-custom {
+    background-color: #800000;
+    color: white;
+}
+
+.btn-success-custom {
+    background-color: #2E8B57;
+    color: white;
+}
+
+
+/*Media Query pour desktop*/
+@media screen and (width > 900px)  {
+    .diet-img-desktop{
+        display: initial;
+    }
+    .table-mobile, .profile-mobile {
+        display: none;
+    }
+}
+
+/*Media Query pour mobile*/
+@media screen and (width < 900px)  {
+    .table-desktop, .profile-desktop{
+        display: none;
+    }
 }

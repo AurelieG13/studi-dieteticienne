@@ -1,0 +1,19 @@
+
+<div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 d-flex sticky-top sidebar-custom">
+    <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
+        <a href="/" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none ">
+            <span class="fs-5 text-center text-white">{{app.user.firstname}} {{app.user.name}} </span>
+        </a>
+        <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
+            <li class="nav-item">
+                <a href="{{path('home')}}" class="nav-link px-sm-0 px-2">
+                    <i class="fs-5 bi-house text-white"></i><span class="ms-1 d-none d-sm-inline text-white">Retour au site</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('profile_infos', {id: app.user.id}) }}"  class="nav-link px-sm-0 px-2">
+                    <i class="fs-5 bi-speedometer2 text-white"></i><span class="ms-1 d-none d-sm-inline text-white">Vos informations personnelles</span></a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Allergy;
+use App\Entity\Diet;
 use App\Entity\User;
 use App\Repository\AllergyRepository;
+use App\Repository\DietRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -45,7 +47,7 @@ class RegistrationPatientFormType extends AbstractType
             ->add('allergies', EntityType::class, [
                 'class' => Allergy::class,
                 'multiple' =>true,
-                'expanded' => true,
+                // 'expanded' => true,
                 'choice_label' => 'name',
                 'query_builder' => function(AllergyRepository $er) {
                     return $er->createQueryBuilder('a')
@@ -53,6 +55,17 @@ class RegistrationPatientFormType extends AbstractType
                 },
                 'label' => 'Allergies',
                 'mapped' => false,
+            ])
+            ->add('diets', EntityType::class, [
+                'class' => Diet::class,
+                'multiple' =>true,
+                'expanded' => true,
+                'choice_label' => 'name',
+                'query_builder' => function(DietRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'label' => 'Régimes',
             ])
         ;
     }

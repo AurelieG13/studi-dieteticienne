@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Modifier ingredient{% endblock %}
+
+{% block body %}
+<main class="container">
+<h1>Modification d'un ingredient</h1>
+        <section>
+                <a href="{{ path('admin_ingredient_list') }}" type="button" class="btn btn-custom my-3">Retour</a>
+        </section>
+        {{ form_start(form)}}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.quantity) }}
+        <section>
+                <button type="submit" class="btn btn-custom my-3">Modifier</button>
+        </section>
+        {{ form_end(form)}}
+</main>
+
+
+{% endblock %}

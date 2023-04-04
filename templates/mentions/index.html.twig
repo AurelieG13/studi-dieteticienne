@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Mentions obligatoires{% endblock %}
+
+{% block body %}
+  <div class="mb-4">
+      <a type="button" class="btn btn-custom" href="{{ path('manager_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
+  </div>
+
+  <h1>Liste des mentions obligatoires</h1>
+
+    <p>Mentions légales</p>
+    <p>Confidentialité</p>
+    <p>Cookies</p>
+{% endblock %}

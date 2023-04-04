@@ -4,11 +4,11 @@
 
 {% block body %}
 
-    <div class="mb-4">
-        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> panneau d'administration</a>
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
     </div>
 
-    <h1>Liste des étapes</h1>
+    <h1  class="text-center">Liste des étapes</h1>
     <div class="mb-4 mt-4">
         <a href="{{ path('admin_step_add') }}" type="button" class="btn btn-custom">
             Ajouter une étape
@@ -16,12 +16,12 @@
     </div>
             
 
-<table class="table table-bordered">
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
     <thead>
-        <tr class="text-center">
-            <td>Nom</td>
-            <td>Description</td>
-            <td colspan="2">Actions</td>
+        <tr class="text-center align-middle">
+            <th>Nom</th>
+            <th>Description</th>
+            <th colspan="2">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -30,12 +30,12 @@
             <td>{{ step.name }}</td>
             <td>{{ step.description }}</td>
             <td>
-            <a href="{{ path('admin_step_edit', {id: step.id}) }}" type="button" class="btn btn-success">
+            <a href="{{ path('admin_step_edit', {id: step.id}) }}" type="button" class="btn btn-success-custom">
                 Modifier
             </a>
             </td>
             <td>
-            <a href="{{ path('admin_step_delete', {id: step.id}) }}" type="button" class="btn btn-danger">
+            <a href="{{ path('admin_step_delete', {id: step.id}) }}" type="button" class="btn btn-danger-custom">
                 Supprimer
             </a>
             </td>

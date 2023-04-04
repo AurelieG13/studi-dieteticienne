@@ -1,24 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success" role="alert">{{ message }}</div>
-        {% endfor %}
-        <a href="{{ path('recipe_list') }}">Liste des recettes</a>
-    <h1>Page d'accueil</h1>
-
-    <section>
-        <h2>A propos</h2>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore ducimus doloremque iure neque culpa nam modi natus vitae ex facilis voluptas iusto, quae cumque laborum placeat! Totam iure eaque doloribus!</p>
+    <section class="text-center mt-4">
+        <img src="{{ asset('assets/images/colibri.jpg') }}" class="colibri"  alt="colibri">
+        <h1>Sandrine COUPART</h1>
+        <h2>Diététicienne - Nutritionniste</h2>
     </section>
 
-    <section>
-        <h2>Mes Services</h2>
+<div class="separator-custom mt-5"></div>
+    <section class="text-center mt-4"> 
+        <h2>A propos</h2>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore ducimus doloremque iure neque culpa nam modi natus vitae ex facilis voluptas iusto, quae cumque laborum placeat! Totam iure eaque doloribus!</p>
+        <img src="{{ asset('assets/images/diet-apropos.jpg') }}" class="diet-img"  alt="plat coloré">
 
+    </section>
+
+<div class="separator-custom mt-5"></div>
+    <section class="text-center mt-4">
+        <h2>Mes Services</h2>
+        <h3><a href="{{ path('recipe_list') }}" type="button" class="btn btn-custom">Acceder aux recettes</a></h3>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore ducimus doloremque iure neque culpa nam modi natus vitae ex facilis voluptas iusto, quae cumque laborum placeat! Totam iure eaque doloribus!</p>
+        <img src="{{ asset('assets/images/diet-fruits.jpg') }}" class="diet-img"  alt="fruits">
+        <img src="{{ asset('assets/images/diet-legumes.jpg') }}" class="diet-img diet-img-desktop"  alt="legumes">
     </section>
     
 

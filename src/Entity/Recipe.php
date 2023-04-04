@@ -22,6 +22,9 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $activeRecipe = null;
+
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $prepareTime = null;
 
@@ -34,21 +37,25 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: Allergy::class, inversedBy: 'recipies')]
     private ?Collection $allergies;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class)]
-    private Collection $ingredients;
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recipies')]
+    private ?Collection $ingredients;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Diet::class)]
-    private Collection $diet;
+    #[ORM\ManyToMany(targetEntity: Diet::class, inversedBy: 'recipies')]
+    private ?Collection $diets;
 
     #[ORM\ManyToMany(targetEntity: Step::class, inversedBy: 'recipes')]
-    private Collection $steps;
+    private ?Collection $steps;
+
+    #[ORM\OneToMany(mappedBy: 'recipies', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
     public function __construct()
     {
         $this->allergies = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
-        $this->diet = new ArrayCollection();
+        $this->diets = new ArrayCollection();
         $this->steps = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString()
@@ -145,7 +152,7 @@ class Recipe
         return $this;
     }
 
-    /**
+        /**
      * @return Collection<int, Ingredient>
      */
     public function getIngredients(): Collection
@@ -157,7 +164,6 @@ class Recipe
     {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
-            $ingredient->setRecipe($this);
         }
 
         return $this;
@@ -165,29 +171,23 @@ class Recipe
 
     public function removeIngredient(Ingredient $ingredient): self
     {
-        if ($this->ingredients->removeElement($ingredient)) {
-            // set the owning side to null (unless already changed)
-            if ($ingredient->getRecipe() === $this) {
-                $ingredient->setRecipe(null);
-            }
-        }
+        $this->ingredients->removeElement($ingredient);
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Diet>
+            /**
+     * @return Collection<int, Ingredient>
      */
-    public function getDiet(): Collection
+    public function getDiets(): Collection
     {
-        return $this->diet;
+        return $this->diets;
     }
 
     public function addDiet(Diet $diet): self
     {
-        if (!$this->diet->contains($diet)) {
-            $this->diet->add($diet);
-            $diet->setRecipe($this);
+        if (!$this->diets->contains($diet)) {
+            $this->diets->add($diet);
         }
 
         return $this;
@@ -195,15 +195,11 @@ class Recipe
 
     public function removeDiet(Diet $diet): self
     {
-        if ($this->diet->removeElement($diet)) {
-            // set the owning side to null (unless already changed)
-            if ($diet->getRecipe() === $this) {
-                $diet->setRecipe(null);
-            }
-        }
+        $this->diets->removeElement($diet);
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, Step>
@@ -225,6 +221,56 @@ class Recipe
     public function removeStep(Step $step): self
     {
         $this->steps->removeElement($step);
+
+        return $this;
+    }
+
+    /**
+     * Get the value of activeRecipe
+     */ 
+    public function getActiveRecipe()
+    {
+        return $this->activeRecipe;
+    }
+
+    /**
+     * Set the value of activeRecipe
+     *
+     * @return  self
+     */ 
+    public function setActiveRecipe($activeRecipe)
+    {
+        $this->activeRecipe = $activeRecipe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setRecipies($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getRecipies() === $this) {
+                $comment->setRecipies(null);
+            }
+        }
 
         return $this;
     }
