@@ -97,6 +97,14 @@ body {
     color: white;
 }
 
+.reply-custom{
+    background-color: #d2cbc7;
+}
+
+.comment-custom{
+    background-color: #eee6e1;
+}
+
 
 /*Media Query pour desktop*/
 @media screen and (width > 900px)  {

@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\Rating;
 use App\Entity\Recipe;
+use App\Form\CommentType;
+use App\Form\RatingType;
 use App\Form\RecipeType;
+use App\Repository\RatingRepository;
 use App\Repository\RecipeRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,11 +38,86 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/details/{id<\d+>}', name: 'details')]
-    public function details(RecipeRepository $recipeRepository, Recipe $recipe): Response
+    public function details(
+        RecipeRepository $recipeRepository,
+        Recipe $recipe, 
+        Request $request, 
+        ManagerRegistry $doctrine, 
+        RatingRepository $ratingRepository
+        ): Response
     {
         $recipe = $recipeRepository->findOneById($recipe->getId());
+
+        //Comments
+        //Create a void comment 
+        $comment = new Comment;
+        //Create form
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        //Form processing
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment->setRecipies($recipe);
+
+                //get content parentid
+                $parentid = $commentForm->get('parentid')->getData();                
+                
+                $em = $doctrine->getManager();
+
+                //get comment parent
+                $parent = $em->getRepository(Comment::class)->find($parentid);
+
+                //define parent
+                $comment->setParent($parent);
+
+                $em->persist($comment);
+                $em->flush();
+            
+
+            $this->addFlash('success','votre commentaire a été ajouté avec succès');
+            return $this->redirectToRoute('recipe_details', ['id' => $recipe->getId()]);
+    }
+
+    //Rating
+        //Create a void rate 
+        $rating = new Rating;
+        //Create form
+        $ratingForm = $this->createForm(RatingType::class, $rating);
+        $ratingForm->handleRequest($request);
+
+        //Form processing
+        if ($ratingForm->isSubmitted() && $ratingForm->isValid()) {
+                $rating->setRecipies($recipe)
+                    ->setUser($this->getUser());
+                
+                $existingRate = $ratingRepository->findOneBy([
+                    'user' => $this->getUser(),
+                    'recipies' => $recipe
+                ]);
+
+                if(!$existingRate){
+                    $em = $doctrine->getManager();
+                    $em->persist($rating);
+                }else{
+                    $existingRate->setNote(
+                        $ratingForm->getData()->getNote()
+                    );
+
+
+                }
+                $em = $doctrine->getManager();
+                $em->flush();
+            
+
+            $this->addFlash('success','votre note a été ajoutée avec succès');
+            return $this->redirectToRoute('recipe_details', ['id' => $recipe->getId()]);
+    }
+
+
         return $this->render('recipe/details.html.twig', [
-            'recipe' => $recipe
+            'recipe' => $recipe,
+            'commentForm' => $commentForm->createView(),
+            'ratingForm' => $ratingForm->createView(),
         ]);
     }
 

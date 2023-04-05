@@ -9,8 +9,15 @@
     <section class="title-detail-custom mt-5">
         <h1>{{ recipe.title }}</h1>
         <p>{{ recipe.description}}</p>
-        <h3>Avis</h3>
-        <p>Etoiles / 5</p>
+        <p><a href="#Comments">Voir les Avis</a></p>
+        <p>Note globale : {{ recipe.average|number_format(2, '.', ',') }} / 5</p>
+        <div class="mb-5 mt-3">
+        <span>Régimes : </span>
+            {% for diet in recipe.diets %}
+                <span class="badge bg-info"> {{ diet.name }} </span>
+            {% endfor %}
+        </div>
+        
     </section>
 
     <section class="title-detail-custom">
@@ -113,10 +120,9 @@
                             {% for allergy in recipe.allergies %}
                             <li class="list-group-item d-flex justify-content-between align-items-center list-details">
                             {{ allergy.name }}
-                            {# <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span> #}
                             </li>
                             {% else %}
-                            <p>pas d'allergie</p>
+                            <p>Pas d'allergie</p>
                             {% endfor %}
                         </ul>
                     </div>
@@ -133,12 +139,11 @@
                     <div>
                         <ul class="list-group">
                             {% for diet in recipe.diets %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
-                            {{ diet.name }}
-                            {# <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span> #}
-                            </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                                    {{ diet.name }}
+                                </li>
                             {% else %}
-                            <p>pas de régime particulier</p>
+                            <p>Pas de régime particulier</p>
                             {% endfor %}
                         </ul>
                     </div>
@@ -146,4 +151,89 @@
             </div>
         </div>
     </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5" id="Comments"></div>
+            <h2 class="ms-5 subtitle-detail">Liste des commentaires</h2>
+            <div class="row justify-content-center">
+                <div class="col-9">
+                    <div>
+                        {% for comment in recipe.comments %}
+                        {% if comment.parent == null %}
+                        <div class="comment-custom">
+                            <p>Publié par {{ comment.name }} {{ comment.firstname }} le {{ comment.createdAt|date('d/m/y') }} à {{ comment.createdAt|date('H:i') }}</p>
+                            <p>Commentaire : {{ comment.content }}</p>
+                            <p><a href="#add-comment" data-reply data-id="{{ comment.id }}" class="btn btn-custom">Répondre</a></p>
+                            
+                            {# on affiche les réponses  #}
+                                <div class="ms-4 reply-custom">
+                                    {% for reply in comment.replies %}
+                                        <p>Réponse publiée par {{ reply.name }} {{ reply.firstname }} le {{ reply.createdAt|date('d/m/y') }} à {{ reply.createdAt|date('H:i') }}</p>
+                                        <p>Commentaire : {{ reply.content }}</p>
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+                            <hr>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <h2 class="ms-5 subtitle-detail">Ajouter un commentaire</h2>
+            <div class="row justify-content-center">
+                <div class="col-9" id="add-comment">
+                    <div>
+                        {{ form_start(commentForm) }}
+                            {{ form_row(commentForm.email) }}
+                            {{ form_row(commentForm.name) }}
+                            {{ form_row(commentForm.firstname) }}
+                            {{ form_row(commentForm.content) }}
+                            {{ form_row(commentForm.rgpd) }}
+                            <section>
+                                <button type="submit" class="btn btn-custom my-3">Ajouter</button>
+                            </section>
+                        {{ form_end(commentForm, {render_rest: false}) }}
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5" id="Rates"></div>
+            <h2 class="ms-5 subtitle-detail">Note globale : {{ recipe.average|number_format(2, '.', ',') }} / 5</h2>
+
+            <h2 class="ms-5 subtitle-detail">Attribuer une note</h2>
+            <div class="row justify-content-center">
+                <div class="col-9" id="add-rate">
+                    <div>
+                        {{ form_start(ratingForm) }}
+                            {{ form_row(ratingForm.note) }}
+                            <section>
+                                <button type="submit" class="btn btn-custom my-3">Ajouter</button>
+                            </section>
+                        {{ form_end(commentForm, {render_rest: false}) }}
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    {# <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail">Attribuer une note</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                        <div class="stars">
+                            <i class="bi bi-star-fill star-custom" data-value="1"></i><i class="bi bi-star-fill star-custom" data-value="2"></i><i class="bi bi-star-fill star-custom" data-value="3"></i><i class="bi bi-star-fill star-custom" data-value="4"></i><i class="bi bi-star-fill star-custom" data-value="5"></i>
+                        </div>
+                        <!-- a mettre en hidden -->
+                        <label for="note">Note attribuée</label>
+                        <input type="text" name="note" id="note" value="0"><span> / 5</span>
+                </div>
+            </div>
+        </div>
+    </section> #}
+    
+    <script src="{{ asset('assets/js/comments.js')}}"></script>
+    <script src="{{ asset('assets/js/stars.js')}}"></script>
 {% endblock %}

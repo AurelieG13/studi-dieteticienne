@@ -42,7 +42,9 @@ class CommentType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('rgpd', CheckboxType::class)
+            ->add('rgpd', CheckboxType::class, [
+                'label' => 'Accepter les conditions d\'utilisation'
+            ])
             ->add('parentid', HiddenType::class, [
                 'mapped' => false
             ])

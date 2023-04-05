@@ -49,6 +49,13 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipies', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\OneToMany(mappedBy: 'recipies', targetEntity: Rating::class, orphanRemoval: true)]
+    private Collection $ratings;
+
+    
+    private ?float $average = null;
+
+
     public function __construct()
     {
         $this->allergies = new ArrayCollection();
@@ -56,6 +63,7 @@ class Recipe
         $this->diets = new ArrayCollection();
         $this->steps = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function __toString()
@@ -274,4 +282,54 @@ class Recipe
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setRecipies($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getRecipies() === $this) {
+                $rating->setRecipies(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+    public function getAverage()
+    {
+        $ratings = $this->ratings;
+        if($ratings->toArray() === []){
+            $this->average = null;
+            return $this->average;
+        }
+
+        $total = 0;
+        foreach ($ratings as $rating) {
+            $total += $rating->getNote();
+        }
+
+        $this->average = $total / count($ratings);
+
+        return $this->average;
+    }
+
 }
