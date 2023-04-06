@@ -12,14 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/admin/user', name: 'admin_user_')]
 class AdminUserController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function list(UserRepository $userRepository): Response
+    public function list(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $users = $userRepository->findAll();
+        $users = $paginator->paginate(
+            $userRepository->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/admin_user/list.html.twig', [
             'users' => $users,
         ]);

@@ -10,15 +10,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/admin/ingredient', name: 'admin_ingredient_')]
 class AdminIngredientController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function index(IngredientRepository $ingredientRepository): Response
+    public function index(IngredientRepository $ingredientRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $ingredients = $paginator->paginate(
+            $ingredientRepository->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/admin_ingredient/list.html.twig', [
-            'ingredients' => $ingredientRepository->findAll(),
+            'ingredients' => $ingredients,
         ]);
     }
 

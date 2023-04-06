@@ -89,6 +89,15 @@
     </tbody>
 </table>
 
+    {# display navigation #}
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="navigation col-4">
+                {{ knp_pagination_render(recipes) }}
+            </div>
+        </div>
+    </div>
+
         <script src="{{ asset('assets/js/scripts.js')}}"></script>
 
 {% endblock %}

@@ -10,14 +10,20 @@ use App\Entity\Recipe;
 use App\Form\RecipeType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/admin/recipe', name: 'admin_recipe_')]
 class AdminRecipeController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function index(RecipeRepository $recipeRepository): Response
+    public function index(RecipeRepository $recipeRepository,  PaginatorInterface $paginator, Request $request): Response
     {
-        $recipes = $recipeRepository->findAll();
+        $recipes = $paginator->paginate(
+            $recipeRepository->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/admin_recipe/list.html.twig', [
             'recipes' => $recipes,
         ]);

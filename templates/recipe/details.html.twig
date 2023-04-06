@@ -193,7 +193,7 @@
                             <section>
                                 <button type="submit" class="btn btn-custom my-3">Ajouter</button>
                             </section>
-                        {{ form_end(commentForm, {render_rest: false}) }}
+                        {{ form_end(commentForm) }}
                     </div>
                 </div>
             </div>
@@ -212,27 +212,11 @@
                             <section>
                                 <button type="submit" class="btn btn-custom my-3">Ajouter</button>
                             </section>
-                        {{ form_end(commentForm, {render_rest: false}) }}
+                        {{ form_end(ratingForm) }}
                     </div>
                 </div>
             </div>
     </section>
-
-    {# <section class="container">
-        <div class="separator-custom mt-5"></div>
-            <h2 class="ms-5 subtitle-detail">Attribuer une note</h2>
-            <div class="row justify-content-center">
-                <div class="col-9 text-center">
-                        <div class="stars">
-                            <i class="bi bi-star-fill star-custom" data-value="1"></i><i class="bi bi-star-fill star-custom" data-value="2"></i><i class="bi bi-star-fill star-custom" data-value="3"></i><i class="bi bi-star-fill star-custom" data-value="4"></i><i class="bi bi-star-fill star-custom" data-value="5"></i>
-                        </div>
-                        <!-- a mettre en hidden -->
-                        <label for="note">Note attribuée</label>
-                        <input type="text" name="note" id="note" value="0"><span> / 5</span>
-                </div>
-            </div>
-        </div>
-    </section> #}
     
     <script src="{{ asset('assets/js/comments.js')}}"></script>
     <script src="{{ asset('assets/js/stars.js')}}"></script>

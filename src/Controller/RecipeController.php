@@ -42,7 +42,8 @@ class RecipeController extends AbstractController
         RecipeRepository $recipeRepository,
         Recipe $recipe, 
         Request $request, 
-        ManagerRegistry $doctrine, 
+        ManagerRegistry $doctrine,
+        EntityManagerInterface $manager,
         RatingRepository $ratingRepository
         ): Response
     {
@@ -51,26 +52,38 @@ class RecipeController extends AbstractController
         //Comments
         //Create a void comment 
         $comment = new Comment;
+        if($this->getUser()) {
+            $comment->setName($this->getUser()->getName())
+                ->setFirstname($this->getUser()->getFirstname())
+                ->setEmail($this->getUser()->getEmail());
+        }
+
+        
         //Create form
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
 
         //Form processing
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment = $commentForm->getData();
                 $comment->setRecipies($recipe);
+                
 
                 //get content parentid
                 $parentid = $commentForm->get('parentid')->getData();                
                 
                 $em = $doctrine->getManager();
-
+                
                 //get comment parent
-                $parent = $em->getRepository(Comment::class)->find($parentid);
+                if($parentid != null){
+                    $parent = $em->getRepository(Comment::class)->find($parentid);
+                }
 
                 //define parent
-                $comment->setParent($parent);
-
+                $comment->setParent($parent ?? null);
+                
                 $em->persist($comment);
+
                 $em->flush();
             
 
@@ -81,9 +94,12 @@ class RecipeController extends AbstractController
     //Rating
         //Create a void rate 
         $rating = new Rating;
+        
         //Create form
         $ratingForm = $this->createForm(RatingType::class, $rating);
         $ratingForm->handleRequest($request);
+
+
 
         //Form processing
         if ($ratingForm->isSubmitted() && $ratingForm->isValid()) {

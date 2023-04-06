@@ -32,7 +32,6 @@ class RatingType extends AbstractType
                     'class' => 'form-label mt-4'
                 ]
             ])
-            ->add('envoyer', SubmitType::class)
         ;
     }
 

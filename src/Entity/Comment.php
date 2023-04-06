@@ -45,7 +45,7 @@ class Comment
     private ?self $parent = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
-    private Collection $replies;
+    private ?Collection $replies;
 
     public function __construct()
     {
@@ -169,7 +169,7 @@ class Comment
     /**
      * @return Collection<int, self>
      */
-    public function getReplies(): Collection
+    public function getReplies(): ?Collection
     {
         return $this->replies;
     }
