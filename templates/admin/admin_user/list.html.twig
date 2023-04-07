@@ -22,6 +22,8 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Allergies</th>
+            <th>Régimes</th>
+            <th>Rôles</th>
             <th colspan="2">Actions</th>
         </tr>
     </thead>
@@ -31,13 +33,30 @@
             <td>{{ user.name }}</td>
             <td>{{ user.firstname }}</td>
             <td>
-            
             {% for allergy in user.allergies %}
                     <p>{{ allergy.name }}</p>
                 {% else %}
                     <p>pas d'allergie</p>
             {% endfor %}
-            
+            </td>
+            <td>
+            {% for diet in user.diets %}
+                    <p>{{ diet.name }}</p>
+                {% else %}
+                    <p>pas de régime</p>
+            {% endfor %}
+            </td>
+            <td>
+                {% for role in user.roles %}
+                    {% if role == "ROLE_ADMIN" %}
+                        {% set name = "Administrateur" %}
+                        {% set color = "danger" %}
+                    {% else %}
+                        {% set name = "Membre" %}
+                        {% set color = "info" %}
+                    {% endif %}
+                    <span class="badge bg-{{ color }}"> {{ name }} </span>
+                {% endfor %}
             </td>
             <td>
             <a href="{{ path('admin_user_editPatient', {id: user.id}) }}" type="button" class="btn btn-success-custom">

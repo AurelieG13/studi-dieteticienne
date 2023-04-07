@@ -5,20 +5,29 @@
 {% block body %}
 
 <div class="container">
-    <h1>S'enregistrer</h1>
+    <h1>Inscription</h1>
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.name) }}
         {{ form_row(registrationForm.firstname) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.allergies) }}
+        {{ form_row(registrationForm.diets) }}
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+            label: 'Mot de passe'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn btn-custom mt-4">S'enregistrer</button>
+        <section  class="text-center">
+            <button type="submit" class="btn btn-custom my-3">M'inscrire</button>
+        </section>
     {{ form_end(registrationForm) }}
+
+        <section  class="text-center">
+            <hr class="hr-custom">
+            <p class="pt-2" >J'ai déjà un compte ? </p>
+            <a href="{{ path('app_login') }}" class="btn btn-custom">Me connecter</a>
+        </section>
 </div>
     
 {% endblock %}
