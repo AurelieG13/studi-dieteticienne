@@ -17,7 +17,6 @@ deploy:
       
     # commands that are executed on the runtime after new files are copied
     post-deployment-remote-commands:
-      - php bin/create-app-secret
       # set right file permissions for Symfony
       - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
       - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
@@ -48,7 +47,6 @@ deploy:
     
     # commands that are executed on the runtime after new files are copied
     post-deployment-remote-commands:
-      - php bin/create-app-secret
       # set right file permissions for Symfony
       - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
       - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
